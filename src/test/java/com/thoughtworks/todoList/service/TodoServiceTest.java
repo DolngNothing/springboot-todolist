@@ -1,17 +1,22 @@
 package com.thoughtworks.todoList.service;
 
+import com.thoughtworks.todoList.dto.TodoRequest;
 import com.thoughtworks.todoList.dto.TodoResponse;
 import com.thoughtworks.todoList.mapper.TodoMapper;
 import com.thoughtworks.todoList.model.Todo;
 import com.thoughtworks.todoList.repository.TodoRepository;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
+import org.mockito.internal.matchers.Any;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.BDDMockito.given;
 
 
@@ -36,15 +41,27 @@ public class TodoServiceTest {
         //given
         TodoRepository todoRepository = Mockito.mock(TodoRepository.class);
         TodoService todoService = new TodoService(todoRepository);
-        Todo todo=new Todo(1,"todo",false);
-        given(todoRepository.save(todo)).willReturn(todo);
+        TodoRequest todoRequest=new TodoRequest(1,"todo",false);
+        given(todoRepository.save(any(Todo.class))).willReturn(TodoMapper.map(todoRequest));
 
         //when
-        TodoResponse savedTodo = todoService.save(todo);
+        TodoResponse savedTodo = todoService.save(todoRequest);
 
         //then
-        assertEquals(TodoMapper.map(todo), savedTodo);
+        assertEquals(TodoMapper.map(TodoMapper.map(todoRequest)), savedTodo);
     }
 
+    @Test
+    void should_return_new_todo_when_update_given_new_todo_todo_id() {
+        //given
+        TodoRepository todoRepository = Mockito.mock(TodoRepository.class);
+        TodoService todoService = new TodoService(todoRepository);
+        Todo todo=new Todo(1,"todo",false);
+        given(todoRepository.findById(anyInt())).willReturn(Optional.of(todo));
+        //when
+        TodoResponse newTodo = todoService.update(1,todo);
 
+        //then
+        assertEquals(TodoMapper.map(todo), newTodo);
+    }
 }

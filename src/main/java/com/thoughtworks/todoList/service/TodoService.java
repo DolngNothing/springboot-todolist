@@ -1,9 +1,13 @@
 package com.thoughtworks.todoList.service;
 
+import com.thoughtworks.todoList.dto.TodoRequest;
 import com.thoughtworks.todoList.dto.TodoResponse;
+import com.thoughtworks.todoList.exception.IllegalOperationException;
+import com.thoughtworks.todoList.exception.NoSuchDataException;
 import com.thoughtworks.todoList.mapper.TodoMapper;
 import com.thoughtworks.todoList.model.Todo;
 import com.thoughtworks.todoList.repository.TodoRepository;
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -23,7 +27,15 @@ public class TodoService {
         return todoRepository.findAll().stream().map(TodoMapper::map).collect(Collectors.toList());
     }
 
-    public TodoResponse save(Todo todo) {
-        return TodoMapper.map(todo);
+    public TodoResponse save(TodoRequest todoRequest) {
+        return TodoMapper.map(todoRepository.save(TodoMapper.map(todoRequest)));
+    }
+
+    public TodoResponse update(int i, TodoRequest todoRequest) throws NoSuchDataException, IllegalOperationException {
+        Todo todo = todoRepository.findById(i).orElse(null);
+        if(todo==null) throw new NoSuchDataException();
+        if(!todo.getId().equals(todoRequest.getId())) throw new IllegalOperationException();
+        BeanUtils.copyProperties(todoRequest,todo);
+        return TodoMapper.map(todoRepository.save(todo));
     }
 }

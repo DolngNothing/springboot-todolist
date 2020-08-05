@@ -10,6 +10,12 @@ public class TodoRequest {
     public TodoRequest() {
     }
 
+    public TodoRequest(Integer id, String content, Boolean status) {
+        this.id = id;
+        this.content = content;
+        this.status = status;
+    }
+
     public Integer getId() {
         return id;
     }
