@@ -2,6 +2,7 @@ package com.thoughtworks.todoList.service;
 
 import com.thoughtworks.todoList.dto.TodoResponse;
 import com.thoughtworks.todoList.mapper.TodoMapper;
+import com.thoughtworks.todoList.model.Todo;
 import com.thoughtworks.todoList.repository.TodoRepository;
 import org.springframework.stereotype.Service;
 
@@ -20,5 +21,9 @@ public class TodoService {
 
     public List<TodoResponse> findAll() {
         return todoRepository.findAll().stream().map(TodoMapper::map).collect(Collectors.toList());
+    }
+
+    public TodoResponse save(Todo todo) {
+        return TodoMapper.map(todo);
     }
 }

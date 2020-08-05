@@ -31,4 +31,20 @@ public class TodoServiceTest {
         assertEquals(todos.stream().map(TodoMapper::map).collect(Collectors.toList()), foundTodoList);
     }
 
+    @Test
+    void should_return_saved_todo_when_save_given_new_todo() {
+        //given
+        TodoRepository todoRepository = Mockito.mock(TodoRepository.class);
+        TodoService todoService = new TodoService(todoRepository);
+        Todo todo=new Todo(1,"todo",false);
+        given(todoRepository.save(todo)).willReturn(todo);
+
+        //when
+        TodoResponse savedTodo = todoService.save(todo);
+
+        //then
+        assertEquals(todo, savedTodo);
+    }
+
+
 }
