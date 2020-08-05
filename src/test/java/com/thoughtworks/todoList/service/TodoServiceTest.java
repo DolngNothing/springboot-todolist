@@ -43,7 +43,7 @@ public class TodoServiceTest {
         TodoResponse savedTodo = todoService.save(todo);
 
         //then
-        assertEquals(todo, savedTodo);
+        assertEquals(TodoMapper.map(todo), savedTodo);
     }
 
 
