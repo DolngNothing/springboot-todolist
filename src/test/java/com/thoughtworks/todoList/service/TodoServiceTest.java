@@ -21,7 +21,7 @@ public class TodoServiceTest {
         //given
         TodoRepository todoRepository = Mockito.mock(TodoRepository.class);
         TodoService todoService = new TodoService(todoRepository);
-        List<Todo> todos = Collections.singletonList(new Todo());
+        List<Todo> todos = Collections.singletonList(new Todo(1,"todo",false));
         given(todoRepository.findAll()).willReturn(todos);
 
         //when
@@ -30,4 +30,5 @@ public class TodoServiceTest {
         //then
         assertEquals(todos.stream().map(TodoMapper::map).collect(Collectors.toList()), foundTodoList);
     }
+
 }

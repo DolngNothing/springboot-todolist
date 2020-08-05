@@ -16,6 +16,12 @@ public class Todo {
     public Todo() {
     }
 
+    public Todo(Integer id, String content, Boolean status) {
+        this.id = id;
+        this.content = content;
+        this.status = status;
+    }
+
     public Integer getId() {
         return id;
     }

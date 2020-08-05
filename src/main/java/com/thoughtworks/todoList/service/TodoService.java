@@ -1,11 +1,12 @@
 package com.thoughtworks.todoList.service;
 
 import com.thoughtworks.todoList.dto.TodoResponse;
+import com.thoughtworks.todoList.mapper.TodoMapper;
 import com.thoughtworks.todoList.repository.TodoRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class TodoService {
@@ -18,6 +19,6 @@ public class TodoService {
     }
 
     public List<TodoResponse> findAll() {
-        return null;
+        return todoRepository.findAll().stream().map(TodoMapper::map).collect(Collectors.toList());
     }
 }
