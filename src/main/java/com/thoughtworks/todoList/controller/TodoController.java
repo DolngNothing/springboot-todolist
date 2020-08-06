@@ -25,5 +25,10 @@ public class TodoController {
         return todoService.findAll();
     }
 
+    @DeleteMapping("/{id}")
+    public void deleteById(@PathVariable Integer id){
+        todoService.deleteById(id);
+    }
+
 
 }
