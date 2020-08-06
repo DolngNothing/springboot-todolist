@@ -9,7 +9,6 @@ import com.thoughtworks.todoList.model.Todo;
 import com.thoughtworks.todoList.repository.TodoRepository;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
-import org.mockito.internal.matchers.Any;
 
 import java.util.Collections;
 import java.util.List;
@@ -20,6 +19,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.verify;
 
 
 public class TodoServiceTest {
@@ -66,5 +66,19 @@ public class TodoServiceTest {
 
         //then
         assertEquals(TodoMapper.map(TodoMapper.map(todoRequest)), newTodo);
+    }
+
+    @Test
+    void should_return_void_todo_when_delete_given_todo_id() throws IllegalOperationException, NoSuchDataException {
+        //given
+        TodoRepository todoRepository = Mockito.mock(TodoRepository.class);
+        TodoService todoService = new TodoService(todoRepository);
+        TodoRequest todoRequest=new TodoRequest(1,"todo",false);
+        given(todoRepository.findById(anyInt())).willReturn(Optional.of(TodoMapper.map(todoRequest)));
+        //when
+        todoService.deleteById(1);
+
+        //then
+        verify(todoRepository).deleteById(1);
     }
 }

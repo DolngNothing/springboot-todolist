@@ -38,4 +38,8 @@ public class TodoService {
         BeanUtils.copyProperties(todoRequest,todo);
         return TodoMapper.map(todoRepository.save(todo));
     }
+
+    public void deleteById(Integer id) {
+        todoRepository.deleteById(id);
+    }
 }
