@@ -22,6 +22,10 @@ public class Todo {
         this.status = status;
     }
 
+    public Todo(String content) {
+        this.content = content;
+    }
+
     public Integer getId() {
         return id;
     }
