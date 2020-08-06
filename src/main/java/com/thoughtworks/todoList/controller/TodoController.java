@@ -6,6 +6,7 @@ import com.thoughtworks.todoList.service.TodoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import java.util.*;
 
 @RestController
 @RequestMapping("/todos")
@@ -17,6 +18,11 @@ public class TodoController {
     @ResponseStatus(HttpStatus.CREATED)
     public TodoResponse saveTodo(@RequestBody TodoRequest todoRequest){
         return todoService.save(todoRequest);
+    }
+
+    @GetMapping
+    public List<TodoResponse> getAll(){
+        return todoService.findAll();
     }
 
 
