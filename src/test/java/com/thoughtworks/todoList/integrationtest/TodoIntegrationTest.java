@@ -1,5 +1,6 @@
 package com.thoughtworks.todoList.integrationtest;
 
+import com.thoughtworks.todoList.dto.TodoRequest;
 import com.thoughtworks.todoList.model.Todo;
 import com.thoughtworks.todoList.repository.TodoRepository;
 
@@ -67,6 +68,23 @@ public class TodoIntegrationTest {
         //when
         mockMvc.perform(delete("/todos/"+save.getId()))
                 .andExpect(status().isOk());
+        //then
+    }
+
+    @Test
+    void should_return_new_todo_when_update_given_id_new_todo() throws Exception {
+        //given
+        Todo save = todoRepository.save(new Todo(1,"2222",false));
+
+        String newTodo="{   \n" +
+                "    \"id\":"+save.getId()+",\n" +
+                "    \"content\": \"3333\",\n" +
+                "    \"status\":true\n" +
+                "}";
+        //when
+        mockMvc.perform(put("/todos/"+save.getId()).contentType(MediaType.APPLICATION_JSON).content(newTodo))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.status").value(true));
         //then
     }
 
